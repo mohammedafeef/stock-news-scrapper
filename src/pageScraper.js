@@ -1,12 +1,12 @@
 const autoScroll = require("./autoScroller");
-
+const newsService = require("./newsService");
 const scraperObject = {
   url: "https://economictimes.indiatimes.com/markets/stocks/news",
   async scraper(browser) {
     let page = await browser.newPage();
     console.log(`Navigating to ${this.url}...`);
     await page.goto(this.url);
-	
+
     await page.setViewport({
       width: 1200,
       height: 800,
@@ -23,8 +23,8 @@ const scraperObject = {
         imageUrl: newsDom.querySelector("span > span > img")?.src,
       }))
     );
-
-    console.log(newsObjs);
+    await newsService.addNews(newsObjs);
+    console.log("News added to the database");
   },
 };
 
